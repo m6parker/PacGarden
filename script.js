@@ -24,22 +24,32 @@ function plantFlowers(quantity, flowerType){
     }
 }
 
-function checkCollisions(flowerList, flower, index, countType, flowerName, count){
-    console.log(count);
+function checkCollisions(flowerList, flower, index, countType, flowerName){ // maybe also pass in bee position
 
     const flowerPositionX = parseInt(flower.style.left);
     const flowerPositionY = parseInt(flower.style.top);
 
+    //todo - use variables for sizes later
     if(
-        beePositionX < flowerPositionX + 20 &&
+        beePositionX < flowerPositionX + 30 &&
         beePositionX + 30 > flowerPositionX &&
-        beePositionY < flowerPositionY + 20 &&
+        beePositionY < flowerPositionY + 30 &&
         beePositionY + 30 > flowerPositionY
     ){
         flower.remove();
         flowerList.splice(index, 1);
-        count++;
-        countType.textContent = `${flowerName}: ${count}`;
+        switch(flowerName){
+            case 'Pink Flowers' : {
+                pinkcount++;
+                countType.textContent = `${flowerName}: ${pinkcount}`;
+                break;
+            };
+            case 'Sunflowers' : {
+                suncount++;
+                countType.textContent = `${flowerName}: ${suncount}`;
+                break;
+            };
+        }
     }
 }
 
@@ -48,6 +58,10 @@ let beePositionY = 250;
 
 //movement
 document.addEventListener('keydown', (e) => {
+    // todo - check if its within the bounds
+    // checck if it collided with wall or door
+
+
     // move the bee ten pixels depending on what key was pressed
     switch(e.key){
         case 'ArrowUp':
@@ -69,14 +83,16 @@ document.addEventListener('keydown', (e) => {
 
     //check collisions with differemt fowers
     pinkflowers.forEach((flower, index) => {
-        checkCollisions(pinkflowers, flower, index, flowerCount, 'Pink Flowers', pinkcount);
+        checkCollisions(pinkflowers, flower, index, flowerCount, 'Pink Flowers');
     });
 
     sunflowers.forEach((flower, index) => {
-        checkCollisions(sunflowers, flower, index, sunflowerCount, 'Sunflowers', suncount);
+        checkCollisions(sunflowers, flower, index, sunflowerCount, 'Sunflowers');
     });
 
 });
 
+
+// plant the flowers :)
 plantFlowers(10, 'pinkflower');
 plantFlowers(3, 'sunflower');
