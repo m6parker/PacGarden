@@ -1,26 +1,52 @@
-const garden = document.querySelector('.garden-map');
 const bee = document.querySelector('.bee');
+const drone = document.querySelector('.drone');
 const flowerCount = document.querySelector('.pink-flower-count');
 const sunflowerCount = document.querySelector('.sunflower-count');
+
 let pinkflowers = [];
 let sunflowers = [];
 let pinkcount = 0;
 let suncount = 0;
 
-// plant the flowers in the garden
-function plantFlowers(quantity, flowerType){
+// get random location inside bounds of the garden
+const garden = document.querySelector('.garden');
+const gardenPosition = garden.getBoundingClientRect();
+function randomSpotInGarden(){
+    return Math.random() * 490;
+}
+
+// get random location inside bounds of the hive
+const hive = document.querySelector('.hive');
+const hivePosition = hive.getBoundingClientRect();
+function randomSpotInHive(){
+    return Math.random() * 190;
+}
+
+// plant the items at random
+function spawnRandom(quantity, itemType, location){
+    if(itemType === 'bee'){
+        while(location.firstChild){ location.removeChild(location.firstChild); }
+    }
+
     for(let i = 0; i < quantity; i++){
-        const flower = document.createElement('img');
-        flower.src = `img/${flowerType}.png`;
-        flower.className = flowerType;
-        flower.style.left = `${Math.random() * 500}px`;
-        flower.style.top = `${Math.random() * 500}px`;
-        garden.appendChild(flower);
-        if(flowerType === 'pinkflower'){
-            pinkflowers.push(flower);
-        }else if(flowerType === 'sunflower'){
-            sunflowers.push(flower);
+        //create flowers
+        const item = document.createElement('img');
+        item.src = `img/${itemType}.png`;
+        item.className = itemType;
+        if(itemType === 'bee'){
+            item.style.left = `${randomSpotInHive()}px`;
+            item.style.top = `${randomSpotInHive()}px`;
+        }else{
+            item.style.left = `${randomSpotInGarden()}px`;
+            item.style.top = `${randomSpotInGarden()}px`;
         }
+        //plant them
+        if(itemType === 'pinkflower'){
+            pinkflowers.push(item);
+        }else if(itemType === 'sunflower'){
+            sunflowers.push(item);
+        }
+        location.appendChild(item);
     }
 }
 
@@ -50,7 +76,9 @@ function checkCollisions(flowerList, flower, index, countType, flowerName){ // m
                 break;
             };
         }
+        checkQuest(pinkGoal, sunGoal);
     }
+
 }
 
 let beePositionX = 250;
@@ -93,6 +121,90 @@ document.addEventListener('keydown', (e) => {
 });
 
 
+let pinkGoal;
+let sunGoal;
+// give a random quest
+function createQuest(){
+    pinkGoal = Math.floor(Math.random() * 10) + 1;
+    sunGoal = Math.floor(Math.random() * 3) + 1;
+    document.querySelector('.quest-description').innerHTML = `collect ${pinkGoal} pink flowers and ${sunGoal} sunflowers.`;
+    console.log(pinkGoal, sunGoal)
+}
+
+// check if quest is fufilled
+function checkQuest(pinkGoal, sunGoal){
+    if(pinkcount >= pinkGoal && suncount >= sunGoal){
+        completeQuest();
+    }
+}
+
+// win quest
+function completeQuest(){
+    document.querySelector('.quest-description').innerHTML = 'you win';
+}
+
+// ----------------- buttons -------------------
+
+// const pauseScreen = document.querySelector('.pause-container');
+const pauseButton = document.querySelector('.pause-button');
+pauseButton.addEventListener('click', () => {
+    // pauseScreen.classList.toggle('hidden');
+    stopTimer();
+});
+
+// todo - pause banner instead of resume button
+// todo - stop all movement
+const resumeButton = document.querySelector('.resume-button');
+resumeButton.addEventListener('click', () => {
+    // pauseScreen.classList.toggle('hidden');
+    startTimer();
+});
+
+
+// -------------- start game -------------------
+
 // plant the flowers :)
-plantFlowers(10, 'pinkflower');
-plantFlowers(3, 'sunflower');
+spawnRandom(10, 'pinkflower', garden);
+spawnRandom(3, 'sunflower', garden);
+function callSpawn(){
+    // put drones in the hive
+    spawnRandom(10, 'bee', hive)
+}
+//bees buzzing
+setInterval(callSpawn, 1000);
+createQuest();
+
+// ---------------- timer ----------------------
+
+let startTime;
+let timerInterval;
+let elapsedTime = 0;
+const timerDisplay = document.querySelector('.timer');
+
+startTimer();
+
+function formatTime(ms) {
+    let date = new Date(ms);
+    let hours = date.getUTCHours().toString().padStart(2, '0');
+    let minutes = date.getUTCMinutes().toString().padStart(2, '0');
+    let seconds = date.getUTCSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+function startTimer() {
+    startTime = Date.now() - elapsedTime;
+    timerInterval = setInterval(function() {
+        elapsedTime = Date.now() - startTime;
+        timerDisplay.textContent = formatTime(elapsedTime);
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    elapsedTime = 0;
+    timerDisplay.textContent = '00:00:00';
+}
