@@ -14,23 +14,62 @@ body {
     display: none !important;
 }
 
-.map {
+.title{
+    color: yellow;
+}
+
+.hive-title{
+    color: black;
+}
+
+.garden-map{
     background-color: rgb(0, 151, 58);
     padding: 20px;
     border-radius: 10px;
-    border: 2px solid rgb(255, 255, 255);
+    border: 3px solid rgb(255, 255, 255);
     text-align: center;
     height: 500px;
     width: 500px;
     position: relative;
 }
 
-.flower{
+.score-container{
+    background-color: rgb(158, 105, 41);
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid rgb(182, 140, 93);
+    text-align: center;
+    height: 200px;
+    width: 200px;
+    position: relative;
+}
+
+.hive-container{
+    background-color: rgb(255, 184, 3);
+    background-image: url(img/hexagon.png);
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid rgb(162, 116, 0);
+    text-align: center;
+    height: 200px;
+    width: 200px;
+    position: relative;
+}
+
+.pinkflower{
     position: absolute;
+    height: 16px;
+    width: 16px;
+}
+
+.sunflower{
+    position: absolute;
+    height: 32px;
+    width: 32px;
 }
 
 .bee{
     position: absolute;
-    top: 180px;
-    left: 180px;
+    top: 250px;
+    left: 250px;
 }
