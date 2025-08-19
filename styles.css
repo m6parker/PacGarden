@@ -56,6 +56,7 @@ body{
     padding: 5px;
     display: flex;
     color: black;
+    font-family: 'Devin Chavez Font', sans-serif;
 }
 
 .inventory, .right-container{
@@ -64,6 +65,7 @@ body{
     border-radius: 10px;
     margin: 0 10px 10px 10px;
     padding: 5px;
+    font-size: large;
 }
 
 .inventory{

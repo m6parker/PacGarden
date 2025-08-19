@@ -7,6 +7,7 @@ let pinkflowers = [];
 let sunflowers = [];
 let pinkcount = 0;
 let suncount = 0;
+let space = 13;
 
 // get random location inside bounds of the garden
 const garden = document.querySelector('.garden');
@@ -50,10 +51,32 @@ function spawnRandom(quantity, itemType, location){
     }
 }
 
+// check to see if bee is in the garden or hive
+function checkBeeLocation() {
+    const bee = document.querySelector('.bee');
+    const hive = document.querySelector('.hive');
+
+    const beePosition = bee.getBoundingClientRect();
+    const hivePosition = hive.getBoundingClientRect();
+
+    const isInside =
+        beePosition.left >= hivePosition.left &&
+        beePosition.right <= hivePosition.right &&
+        beePosition.top >= hivePosition.top &&
+        beePosition.bottom <= hivePosition.bottom;
+
+    if (isInside) {
+        console.log('in hive');
+    } else {
+        console.log('in garden');
+    }
+}
+
 function checkCollisions(flowerList, flower, index, countType, flowerName){ // maybe also pass in bee position
 
     const flowerPositionX = parseInt(flower.style.left);
     const flowerPositionY = parseInt(flower.style.top);
+    document.querySelector('.space-count').textContent = `space: ${space}`;
 
     //todo - use variables for sizes later
     if(
@@ -67,11 +90,13 @@ function checkCollisions(flowerList, flower, index, countType, flowerName){ // m
         switch(flowerName){
             case 'Pink Flowers' : {
                 pinkcount++;
+                space--;
                 countType.textContent = `${flowerName}: ${pinkcount}`;
                 break;
             };
             case 'Sunflowers' : {
                 suncount++;
+                space--;
                 countType.textContent = `${flowerName}: ${suncount}`;
                 break;
             };
@@ -118,6 +143,8 @@ document.addEventListener('keydown', (e) => {
         checkCollisions(sunflowers, flower, index, sunflowerCount, 'Sunflowers');
     });
 
+    checkBeeLocation();
+
 });
 
 
@@ -145,6 +172,20 @@ function completeQuest(){
 
 // ----------------- buttons -------------------
 
+// todo - limit inventory
+// drop inventory
+const dropButton = document.querySelector('.drop-button');
+dropButton.addEventListener('click', () => {
+    spawnRandom(pinkcount, 'pinkflower', garden);
+    spawnRandom(suncount, 'sunflower', garden);
+    pinkcount = 0;
+    suncount = 0;
+    space = 13;
+    document.querySelector('.space-count').textContent = `space: ${space}`;
+    flowerCount.textContent = `Pink Flowers: ${suncount}`;
+    sunflowerCount.textContent = `Sunflowers: ${suncount}`;
+});
+
 // const pauseScreen = document.querySelector('.pause-container');
 const pauseButton = document.querySelector('.pause-button');
 pauseButton.addEventListener('click', () => {
@@ -156,7 +197,6 @@ pauseButton.addEventListener('click', () => {
 // todo - stop all movement
 const resumeButton = document.querySelector('.resume-button');
 resumeButton.addEventListener('click', () => {
-    // pauseScreen.classList.toggle('hidden');
     startTimer();
 });
 
