@@ -46,6 +46,13 @@ body{
     padding: 5px;
 }
 
+.garden-collider{
+    position: absolute;
+    height: 500px;
+    width: 500px;
+    /* border: 6px solid rgb(184, 15, 15); */
+}
+
 .quests{
     height: 150px;
     width: 872px;

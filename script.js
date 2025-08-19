@@ -26,7 +26,7 @@ function randomSpotInHive(){
 
 // plant the items at random
 function spawnRandom(quantity, itemType, location){
-    if(itemType === 'bee'){
+    if(location === hive){
         while(location.firstChild){ location.removeChild(location.firstChild); }
     }
 
@@ -218,6 +218,7 @@ function callSpawn(){
 //bees buzzing
 setInterval(callSpawn, 1000);
 createQuest();
+alert('****** this game is not complete ******')
 
 // ---------------- timer ----------------------
 
