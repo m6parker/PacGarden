@@ -8,6 +8,7 @@ let sunflowers = [];
 let pinkcount = 0;
 let suncount = 0;
 let space = 13;
+let questcount = 1;
 
 // get random location inside bounds of the garden
 const garden = document.querySelector('.garden');
@@ -168,6 +169,10 @@ function checkQuest(pinkGoal, sunGoal){
 // win quest
 function completeQuest(){
     document.querySelector('.quest-description').innerHTML = 'you win';
+    questcount++;
+    document.querySelector('.quest-title').innerHTML = `Quest #${questcount}:`;
+    createQuest();
+
 }
 
 // ----------------- buttons -------------------
