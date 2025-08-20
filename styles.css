@@ -44,6 +44,8 @@ body{
     margin: 0 10px 10px 10px;
     position: relative;
     padding: 5px;
+    background-image: url(img/garden.png);
+    image-rendering: pixelated;
 }
 
 .garden-collider{
@@ -66,24 +68,43 @@ body{
     font-family: 'Devin Chavez Font', sans-serif;
 }
 
-.inventory, .right-container{
+.inventory-container, .right-container{
     height: 500px;
     width: 150px;
     border-radius: 10px;
     margin: 0 10px 10px 10px;
     padding: 5px;
-    font-size: large;
+    font-size: medium;
+    text-align: center;
+    font-family: 'Devin Chavez Font', sans-serif;
+}
+
+.inventory-container{
+    background-color: rgb(73, 53, 44);
+    border: 3px solid rgb(116, 109, 79);
 }
 
 .inventory{
-    background-color: rgb(73, 53, 44);
-    border: 3px solid rgb(116, 109, 79);
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+    justify-content: flex-start;
+    gap: 1px;
+}
+
+.itemSlot{
+    border: 2px solid rgb(116, 109, 79);
+    border-radius: 10px;
+    height: 45px;
+    width: 45px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .right-container{
     background-color: rgb(255, 176, 176);
     border: 3px solid rgb(255, 104, 104);
-    text-align: center;
     justify-content: space-evenly;
     display: flex;
     align-items: center;
@@ -92,20 +113,25 @@ body{
 
 .pinkflower{
     position: absolute;
-    height: 16px;
-    width: 16px;
+    height: 32px;
+    width: 32px;
+    image-rendering: pixelated;
 }
 
 .sunflower{
     position: absolute;
-    height: 32px;
-    width: 32px;
+    height: 48px;
+    width: 48px;
+    image-rendering: pixelated;
 }
 
 .bee{
     position: absolute;
     top: 250px;
     left: 250px;
+    height: 32px;
+    width: 32px;
+    image-rendering: pixelated;
 }
 
 button{
@@ -116,6 +142,7 @@ button{
     border-radius: 5px;
     cursor: pointer;
     color: white;
+    font-family: 'Devin Chavez Font', sans-serif;
 }
 
 button:hover{
