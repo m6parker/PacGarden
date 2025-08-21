@@ -6,6 +6,9 @@
 body{
     background-color: black;
     color: white;
+    /* background-image: url(img/16x16_tilemap.png);
+    image-rendering: pixelated;
+    background-size: cover; */
 }
 
 .container{
@@ -125,20 +128,41 @@ body{
     image-rendering: pixelated;
 }
 
-.bee{
+.bee, .frog{
     position: absolute;
-    top: 250px;
-    left: 250px;
+    image-rendering: pixelated;
+}
+
+.bee{
     height: 32px;
     width: 32px;
+    top: 250px;
+    left: 250px;
+}
+
+.frog{
+    height: 48px;
+    width: 48px;
+}
+
+.heart{
+    width: 40px;
     image-rendering: pixelated;
+}
+
+.health-container{
+    border: 2px solid rgb(255, 104, 104);
+    border-radius: 10px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 button{
     width: 80px;
     padding: 5px;
     background-color: pink;
-    border: 2px solid hotpink;
+    border: 2px solid rgb(255, 104, 104);
     border-radius: 5px;
     cursor: pointer;
     color: white;
@@ -153,4 +177,31 @@ button:hover{
     width: 150px;
     image-rendering: pixelated;
     margin: 0 40px 0 0;
+}
+
+.death-screen{
+    background: rgba(255, 0, 0, 0.572);
+    width: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 250px;
+    z-index: 100;
+    font-size: 50px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0s 0.5s
+}
+
+.death-screen button{
+    width: 150px;
+    margin: 10px;
+}
+
+.death-screen.show{
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
 }

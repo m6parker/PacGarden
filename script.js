@@ -1,18 +1,23 @@
 const bee = document.querySelector('.bee');
 const drone = document.querySelector('.drone');
+const frog = document.querySelector('.frog');
 
 let beePositionX = 250;
 let beePositionY = 250;
 
+let frogPositionX = 100;
+let frogPositionY = 100;
+
 let pinkflowers = [];
 let sunflowers = [];
+let enemies = [];
 let pinkcount = 0;
 let suncount = 0;
 
 let space = 15;
 let questcount = 1;
 
-let health = 100;
+let health = 2;
 let level = 1
 
 // ------------ random stuff ---------------------
@@ -65,6 +70,11 @@ function emptyInventory(item, quantity){
     slots.forEach(slot => {
         while(slot.firstChild){ slot.removeChild(slot.firstChild); }
     });
+
+    //all slots usable again
+    for(let i = 0; i < slots.length; i++){
+        slots[i].classList.add('empty');
+    }
 }
 
 // ------------ general -------------------------
@@ -93,6 +103,8 @@ function spawnRandom(quantity, itemType, location){
             pinkflowers.push(item);
         }else if(itemType === 'sunflower'){
             sunflowers.push(item);
+        }else if(itemType === 'frog'){
+            enemies.push(item);
         }
         location.appendChild(item);
     }
@@ -107,9 +119,9 @@ function checkBeeLocation() {
     const hivePosition = hive.getBoundingClientRect();
 
     const isInside =
-        beePosition.left >= hivePosition.left &&
-        beePosition.right <= hivePosition.right &&
-        beePosition.top >= hivePosition.top &&
+        beePosition.left   >= hivePosition.left  &&
+        beePosition.right  <= hivePosition.right &&
+        beePosition.top    >= hivePosition.top   &&
         beePosition.bottom <= hivePosition.bottom;
 
     if (isInside) {
@@ -119,7 +131,7 @@ function checkBeeLocation() {
     }
 }
 
-function checkCollisions(flowerList, flower, index, flowerName){ // maybe also pass in bee position
+function checkCollisions(flowerList, flower, index, itemName){ // maybe also pass in bee position
 
     //item positions
     const flowerPositionX = parseInt(flower.style.left);
@@ -132,7 +144,7 @@ function checkCollisions(flowerList, flower, index, flowerName){ // maybe also p
         beePositionY < flowerPositionY + 30  &&
         beePositionY + 30 > flowerPositionY
     ){
-        switch(flowerName){
+        switch(itemName){
             case 'Pink Flowers' : {
                 pinkcount++;
                 addToInventory('pinkflower');
@@ -143,11 +155,33 @@ function checkCollisions(flowerList, flower, index, flowerName){ // maybe also p
                 addToInventory('sunflower');
                 break;
             };
+            case 'frog' : {
+                takeDamage();
+                break;
+            }
         }
         flower.remove();
         flowerList.splice(index, 1);
         checkQuest(pinkGoal, sunGoal);
     }
+}
+
+//touching ememies
+function takeDamage(){
+    const hearts = document.querySelectorAll('.heart');
+    health--;
+    console.log('health', health)
+    if(health === -1){
+        document.querySelector('.death-screen').classList.add('show');
+    }
+
+    hearts[health+1].src = 'img/heart_empty.png';
+    hearts[health+1].classList.add('dead');
+
+
+
+    //move frog
+    spawnRandom(1, 'frog', garden);
 
 }
 
@@ -185,6 +219,10 @@ document.addEventListener('keydown', (e) => {
         checkCollisions(sunflowers, flower, index, 'Sunflowers');
     });
 
+    enemies.forEach((enemy, index) => {
+        checkCollisions(enemies, enemy, index, 'frog');
+    });
+
     checkBeeLocation();
 
 });
@@ -215,6 +253,8 @@ function completeQuest(){
     document.querySelector('.quest-title').innerHTML = `Quest #${questcount}:`;
     createQuest();
     spawnRandom(level, 'bee', hive);
+
+    //todo - need better / more obvious win screen
 }
 
 // ----------------- buttons -------------------
@@ -247,6 +287,10 @@ resumeButton.addEventListener('click', () => {
     startTimer();
 });
 
+const reloadButton = document.querySelector('.play-button');
+reloadButton.addEventListener('click', () =>{
+    location.reload();
+});
 
 // -------------- start game -------------------
 
@@ -262,6 +306,9 @@ setInterval(callSpawn, 1000);
 createQuest();
 createInventorySlots(space);
 // alert('****** this game is not complete ******')
+
+// place the frog!
+spawnRandom(1, 'frog', garden);
 
 
 // ---------------- timer ----------------------
