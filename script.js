@@ -128,6 +128,7 @@ function checkBeeLocation() {
         console.log('in hive');
     } else {
         console.log('in garden');
+}
     console.log(beePosition.right, beePosition.bottom, beePosition.top);
 }
 
