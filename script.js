@@ -27,14 +27,14 @@ const garden = document.querySelector('.garden');
 const gardenPosition = garden.getBoundingClientRect();
 function randomSpotInGarden(){
     return Math.random() * 490;
-}
+};
 
 // get random location inside bounds of the hive
 const hive = document.querySelector('.hive');
 const hivePosition = hive.getBoundingClientRect();
 function randomSpotInHive(){
     return Math.random() * 190;
-}
+};
 
 // ------------ inventory -------------------------
 
@@ -46,7 +46,7 @@ function createInventorySlots(size){
         slot.classList.add('empty');
         document.querySelector('.inventory').appendChild(slot);
     }
-}
+};
 
 // pace in inventory
 function addToInventory(itemType){
@@ -62,7 +62,7 @@ function addToInventory(itemType){
             break;
         }
     };
-}
+};
 
 //empty inventory
 function emptyInventory(item, quantity){
@@ -75,7 +75,7 @@ function emptyInventory(item, quantity){
     for(let i = 0; i < slots.length; i++){
         slots[i].classList.add('empty');
     }
-}
+};
 
 // ------------ general -------------------------
 
@@ -108,7 +108,7 @@ function spawnRandom(quantity, itemType, location){
         }
         location.appendChild(item);
     }
-}
+};
 
 // check to see if bee is in the garden or hive
 function checkBeeLocation() {
@@ -128,9 +128,9 @@ function checkBeeLocation() {
         console.log('in hive');
     } else {
         console.log('in garden');
-}
+    }
     console.log(beePosition.right, beePosition.bottom, beePosition.top);
-}
+};
 
 function checkCollisions(flowerList, flower, index, itemName){ // maybe also pass in bee position
 
@@ -165,7 +165,7 @@ function checkCollisions(flowerList, flower, index, itemName){ // maybe also pas
         flowerList.splice(index, 1);
         checkQuest(pinkGoal, sunGoal);
     }
-}
+};
 
 //touching ememies
 function takeDamage(){
@@ -184,7 +184,7 @@ function takeDamage(){
     //move frog
     spawnRandom(1, 'frog', garden);
 
-}
+};
 
 //movement
 // document.addEventListener('keydown', (e) => {
@@ -237,14 +237,14 @@ function createQuest(){
     pinkGoal = Math.floor(Math.random() * 10) + 1;
     sunGoal = Math.floor(Math.random() * 3) + 1;
     document.querySelector('.quest-description').innerHTML = `collect ${pinkGoal} pink flowers and ${sunGoal} sunflowers.`;
-}
+};
 
 // check if quest is fufilled
 function checkQuest(pinkGoal, sunGoal){
     if(pinkcount >= pinkGoal && suncount >= sunGoal){
         completeQuest();
     }
-}
+};
 
 // win quest
 function completeQuest(){
@@ -256,7 +256,7 @@ function completeQuest(){
     spawnRandom(level, 'bee', hive);
 
     //todo - need better / more obvious win screen
-}
+};
 
 // ----------------- buttons -------------------
 
@@ -301,7 +301,7 @@ spawnRandom(3, 'sunflower', garden);
 function callSpawn(){
     // put drones in the hive
     spawnRandom(level, 'bee', hive)
-}
+};
 //bees buzzing
 setInterval(callSpawn, 1000);
 createQuest();
@@ -318,6 +318,20 @@ spawnRandom(1, 'frog', garden);
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 
+let STATIC_PAGE_WIDTH = window.innerWidth;
+let STATIC_PAGE_HEIGHT = window.innerHeight;
+
+const ResizeCanvas = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    if(window.innerWidth > STATIC_PAGE_WIDTH){ STATIC_PAGE_WIDTH = window.innerWidth; }
+    if(window.innerHeight > STATIC_PAGE_HEIGHT){ STATIC_PAGE_HEIGHT = window.innerHeight; }
+};
+ResizeCanvas();
+
+window.addEventListener("resize", () => ResizeCanvas());
+
 const hive2 = new Image();
 hive2.classList.add('hive');
 
@@ -325,25 +339,27 @@ const bee2 = new Image();
 bee2.src = 'img/bee.png';
 bee2.style.width = 32;
 
+const mapBackground = new Image();
+mapBackground.src = './img/map.png';
+
 let x = 0;
 let y = 0;
 
-const speed = 5;
+const speed = 10;
 
 document.addEventListener('keydown', e => {
-    if(e.keyCode === 68){ x += speed; }//d
-    if(e.keyCode === 65){ x -= speed; }//a
-    if(e.keyCode === 87){ y -= speed; }//w
-    if(e.keyCode === 83){ y += speed; }//s
     if(e.key === 'ArrowRight'){ x += speed; }
     if(e.key === 'ArrowLeft' ){ x -= speed; }
     if(e.key === 'ArrowUp'   ){ y -= speed; }
     if(e.key === 'ArrowDown' ){ y += speed; }
 });
+console.log(window.innerWidth, window.innerHeight);
 
 const GAME_INTERVAL = setInterval(() => {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height); // clear canvas every frame
+    context.drawImage(mapBackground, 0, 0, STATIC_PAGE_WIDTH, STATIC_PAGE_HEIGHT); // draw background
 
+    drawHive(100, 100, 100);
     context.drawImage(bee2, x, y);
 }, 1000/60);
 
@@ -362,11 +378,7 @@ function drawHive(x, y, radius) {
     }
     context.closePath();
     context.stroke();
-}
-
-drawHive(100, 100, 100)
-
-
+};
 
 // ---------------- timer ----------------------
 
@@ -383,7 +395,7 @@ function formatTime(ms) {
     let minutes = date.getUTCMinutes().toString().padStart(2, '0');
     let seconds = date.getUTCSeconds().toString().padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
-}
+};
 
 function startTimer() {
     startTime = Date.now() - elapsedTime;
@@ -391,14 +403,14 @@ function startTimer() {
         elapsedTime = Date.now() - startTime;
         timerDisplay.textContent = formatTime(elapsedTime);
     }, 1000);
-}
+};
 
 function stopTimer() {
     clearInterval(timerInterval);
-}
+};
 
 function resetTimer() {
     clearInterval(timerInterval);
     elapsedTime = 0;
     timerDisplay.textContent = '00:00:00';
-}
+};
