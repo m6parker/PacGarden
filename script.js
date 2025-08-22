@@ -128,7 +128,8 @@ function checkBeeLocation() {
         console.log('in hive');
     } else {
         console.log('in garden');
-    }
+}
+    console.log(beePosition.right, beePosition.bottom, beePosition.top);
 }
 
 function checkCollisions(flowerList, flower, index, itemName){ // maybe also pass in bee position
