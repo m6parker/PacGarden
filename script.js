@@ -128,8 +128,7 @@ function checkBeeLocation() {
         console.log('in hive');
     } else {
         console.log('in garden');
-}
-    console.log(beePosition.right, beePosition.bottom, beePosition.top);
+    }
 }
 
 function checkCollisions(flowerList, flower, index, itemName){ // maybe also pass in bee position
@@ -170,7 +169,7 @@ function checkCollisions(flowerList, flower, index, itemName){ // maybe also pas
 //touching ememies
 function takeDamage(){
     const hearts = document.querySelectorAll('.heart');
-    health--; // todo - move this so you dont accidently hit twice
+    health--;
     console.log('health', health)
     if(health === -1){
         document.querySelector('.death-screen').classList.add('show');
@@ -187,46 +186,46 @@ function takeDamage(){
 }
 
 //movement
-// document.addEventListener('keydown', (e) => {
-//     // todo - check if its within the bounds
-//     // checck if it collided with wall or door
+document.addEventListener('keydown', (e) => {
+    // todo - check if its within the bounds
+    // checck if it collided with wall or door
 
 
-//     // move the bee ten pixels depending on what key was pressed
-//     switch(e.key){
-//         case 'ArrowUp':
-//             beePositionY -= 10;
-//             break;
-//         case 'ArrowDown':
-//             beePositionY += 10;
-//             break;
-//         case 'ArrowLeft':
-//             beePositionX -= 10;
-//             break;
-//         case 'ArrowRight':
-//             beePositionX += 10;
-//             break;
-//     }
+    // move the bee ten pixels depending on what key was pressed
+    switch(e.key){
+        case 'ArrowUp':
+            beePositionY -= 10;
+            break;
+        case 'ArrowDown':
+            beePositionY += 10;
+            break;
+        case 'ArrowLeft':
+            beePositionX -= 10;
+            break;
+        case 'ArrowRight':
+            beePositionX += 10;
+            break;
+    }
 
-//     bee.style.left = `${beePositionX}px`;
-//     bee.style.top = `${beePositionY}px`;
+    bee.style.left = `${beePositionX}px`;
+    bee.style.top = `${beePositionY}px`;
 
-//     //check collisions with differemt fowers
-//     pinkflowers.forEach((flower, index) => {
-//         checkCollisions(pinkflowers, flower, index, 'Pink Flowers');
-//     });
+    //check collisions with differemt fowers
+    pinkflowers.forEach((flower, index) => {
+        checkCollisions(pinkflowers, flower, index, 'Pink Flowers');
+    });
 
-//     sunflowers.forEach((flower, index) => {
-//         checkCollisions(sunflowers, flower, index, 'Sunflowers');
-//     });
+    sunflowers.forEach((flower, index) => {
+        checkCollisions(sunflowers, flower, index, 'Sunflowers');
+    });
 
-//     enemies.forEach((enemy, index) => {
-//         checkCollisions(enemies, enemy, index, 'frog');
-//     });
+    enemies.forEach((enemy, index) => {
+        checkCollisions(enemies, enemy, index, 'frog');
+    });
 
-//     checkBeeLocation();
+    checkBeeLocation();
 
-// });
+});
 
 // ------------ quests -------------------------
 
@@ -288,10 +287,10 @@ resumeButton.addEventListener('click', () => {
     startTimer();
 });
 
-// const reloadButton = document.querySelector('.play-button');
-// reloadButton.addEventListener('click', () =>{
-//     location.reload();
-// });
+const reloadButton = document.querySelector('.play-button');
+reloadButton.addEventListener('click', () =>{
+    location.reload();
+});
 
 // -------------- start game -------------------
 
@@ -310,62 +309,6 @@ createInventorySlots(space);
 
 // place the frog!
 spawnRandom(1, 'frog', garden);
-
-
-// ---------------- canvas ------------------------
-
-
-const canvas = document.querySelector('canvas');
-const context = canvas.getContext('2d');
-
-const hive2 = new Image();
-hive2.classList.add('hive');
-
-const bee2 = new Image();
-bee2.src = 'img/bee.png';
-bee2.style.width = 32;
-
-let x = 0;
-let y = 0;
-
-const speed = 5;
-
-document.addEventListener('keydown', e => {
-    if(e.keyCode === 68){ x += speed; }//d
-    if(e.keyCode === 65){ x -= speed; }//a
-    if(e.keyCode === 87){ y -= speed; }//w
-    if(e.keyCode === 83){ y += speed; }//s
-    if(e.key === 'ArrowRight'){ x += speed; }
-    if(e.key === 'ArrowLeft' ){ x -= speed; }
-    if(e.key === 'ArrowUp'   ){ y -= speed; }
-    if(e.key === 'ArrowDown' ){ y += speed; }
-});
-
-const GAME_INTERVAL = setInterval(() => {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-
-    context.drawImage(bee2, x, y);
-}, 1000/60);
-
-
-function drawHive(x, y, radius) {
-    context.beginPath();
-    for (let i = 0; i < 6; i++) {
-        const angle = (i * Math.PI / 3) - Math.PI / 6;
-        const xPos = x + radius * Math.cos(angle);
-        const yPos = y + radius * Math.sin(angle);
-        if (i === 0) {
-            context.moveTo(xPos, yPos);
-        } else {
-            context.lineTo(xPos, yPos);
-        }
-    }
-    context.closePath();
-    context.stroke();
-}
-
-drawHive(100, 100, 100)
-
 
 
 // ---------------- timer ----------------------
